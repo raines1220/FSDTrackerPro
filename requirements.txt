@@ -1,0 +1,6 @@
+ffmpeg-python
+PyYAML
+requests
+python-dotenv 
+tqdm
+google-genai

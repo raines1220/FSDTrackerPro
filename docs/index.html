@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>FSD Tracker Pro - Demo</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f6f6f6;
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+
+    header {
+      padding: 1rem;
+      background-color: #202020;
+      color: #ffffff;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 1.25rem;
+    }
+
+    .container {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    /* Video section */
+    .video-section {
+      flex: 1;
+      position: relative;
+      background: #000;
+    }
+    .video-wrapper {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+    .video-wrapper iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    /* Side panel */
+    .side-panel {
+      width: 400px;
+      background: #fff;
+      border-left: 1px solid #ddd;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .filter-row {
+      padding: 0.75rem;
+      border-bottom: 1px solid #ddd;
+      background-color: #f9f9f9;
+    }
+    .filter-row select {
+      padding: 0.4rem;
+      font-size: 0.9rem;
+    }
+
+    .events-list {
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    .event-item {
+      border-bottom: 1px solid #eee;
+      padding: 0.75rem;
+      cursor: pointer;
+    }
+    .event-item:hover {
+      background-color: #f0f0f0;
+    }
+
+    .event-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .event-header .timestamp {
+      color: #007bff;
+      cursor: pointer;
+      margin-left: 1rem;
+    }
+    .event-type {
+      font-weight: bold;
+    }
+
+    .hidden {
+      display: none;
+    }
+    .description {
+      margin-top: 0.5rem;
+      font-size: 0.9rem;
+      line-height: 1.4;
+    }
+
+    /* Scrollbar styling for side panel (optional) */
+    .side-panel::-webkit-scrollbar {
+      width: 8px;
+    }
+    .side-panel::-webkit-scrollbar-thumb {
+      background-color: #ccc;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+<header>
+  <h1>FSD Tracker Pro - Demo
+    <a href="https://github.com/raines1220/FSDTrackerPro/" target="_blank" rel="noopener noreferrer">
+      <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="GitHub" style="width:24px;height:24px;margin-left:0.5rem;vertical-align:middle;">
+    </a>
+  </h1>
+</header>
+
+<div class="container">
+  <!-- VIDEO SECTION -->
+  <div class="video-section">
+    <div class="video-wrapper">
+      <!-- Initial embed with no time offset -->
+      <iframe 
+        id="player"
+        src=""
+        allowfullscreen
+      ></iframe>
+    </div>
+  </div>
+
+  <!-- SIDE PANEL -->
+  <div class="side-panel">
+    <!-- Filter row -->
+    <div class="filter-row">
+      <label for="filterType">Filter Events: </label>
+      <select id="filterType">
+        <option value="all">Show All</option>
+        <option value="Positive">Positive Events</option>
+        <option value="Negative">Negative Events</option>
+        <option value="disengaged">Disengaged/Intervened</option>
+      </select>
+    </div>
+
+    <!-- Events list -->
+    <div class="events-list" id="eventsList">
+      <!-- Dynamically populated via JavaScript -->
+    </div>
+  </div>
+</div>
+
+<!-- Put your JSON data (truncated for brevity here) in a script variable: -->
+<script>
+const data = {
+    "version": "0.1",
+    "model_used": "gemini-2.0-flash",
+    "prompt_used": "You are given a 60 seconds (at most) video clip of an autonomous driving test. Please analyze it and identify any interesting driving events. \nFor each event, include the timestamp of the event (in seconds), a 50 words description, the event type, and whether the driver intervened/disengaged.\nIntervened/Disengaged is when the driver assists the autonomous system, or takes over the control of the vehicle.\nNote the driver might discuss about a previous issue, but it's not an event. You should ONLY include events that are happening in the video clip.\nAlso, since the video cannot be longer than 60 seconds, the timestamp should be between [0, 60].\n...\n",
+    "summary": {
+        "total_duration": "49:50",
+        "events": {
+            "total_events": 57,
+            "positive_events": 42,
+            "negative_events": 15,
+            "interventions": 1
+        }
+    },
+    "results": [
+        {
+            "timestamp": "00:56",
+            "description": "The car is driving in autonomous mode on a residential street. There are pedestrians on the right side of the road. The car is approaching the pedestrians and continues driving without slowing down or changing lanes. The car is getting close to the pedestrians.",
+            "event_type": "Negative: UnsafeInteractionWithPedestrians",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "01:07",
+            "description": "The car was stopped and waiting for pedestrians to pass. The system displayed a 'take over to proceed' message. Once the pedestrians passed, the car started moving. It is unclear if the car was waiting for the pedestrians or if it was a coincidence.",
+            "event_type": "Positive: SafeInteractionWithPedestrians",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "01:45",
+            "description": "The car approaches an intersection with a stop sign. The car slows down but does not come to a complete stop. The car then proceeds through the intersection without stopping. The driver does not intervene.",
+            "event_type": "Negative: FailureToStopAtSignOrLight",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "02:25",
+            "description": "The autonomous system decelerates from 36 mph to 0 mph to prepare for a U-turn. The system appears to be handling the deceleration smoothly and appropriately, maintaining a safe distance from other vehicles. The driver is monitoring the system's performance.",
+            "event_type": "Positive: SmoothBraking",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "02:34",
+            "description": "The autonomous system has come to a complete stop to prepare for a U-turn. The system is waiting for a safe opportunity to execute the maneuver, considering the presence of other vehicles and pedestrians. The driver is monitoring the system's performance.",
+            "event_type": "Positive: CorrectObstacleAvoidance",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "02:52",
+            "description": "The autonomous system is executing a U-turn. The system is navigating the turn smoothly and accurately, staying within the lane markings and avoiding obstacles. The driver is monitoring the system's performance and is ready to intervene if necessary.",
+            "event_type": "Positive: AccurateLaneKeeping",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "03:33",
+            "description": "The autonomous system is approaching an intersection and slowing down. The car is approaching the intersection at a slow speed. The system is preparing to make a turn at the intersection. The driver is holding the steering wheel, ready to take over if needed.",
+            "event_type": "Positive: SmoothBraking",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "03:41",
+            "description": "The autonomous system is making a left turn at the intersection. The car is turning smoothly and safely. The driver is holding the steering wheel, ready to take over if needed. The car is staying within the lane markings. The turn is completed successfully.",
+            "event_type": "Positive: AccurateLaneKeeping",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "04:06",
+            "description": "The vehicle approaches a stop sign and performs a Nitsa stop, coming to a complete halt before proceeding. The system then creeps forward before making a left turn, with no traffic obstructing the path. The autonomous system handles the stop sign and turn appropriately.",
+            "event_type": "Positive: ProperSignAndLightCompliance",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "04:47",
+            "description": "The driver activates the windshield wipers to clear pollen smears from the windshield. The driver mentions that the full self-driving system may be degraded due to the pollen on the windshield. The driver is discussing the impact of pollen on the windshield and its potential effect on the autonomous system.",
+            "event_type": "Negative: IncorrectRoadConditionHandling",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "04:52",
+            "description": "The vehicle approaches a police car that has pulled someone over on the opposite side of the road. The driver comments on the unsafe location of the pull-over. The autonomous system continues to drive safely, maintaining its lane and speed, while the driver observes the police activity.",
+            "event_type": "Positive: SafeInteractionWithVehicles",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "05:14",
+            "description": "The car is performing an unprotected U-turn. The car successfully completes the U-turn and continues driving straight in the middle lane. The driver is observing the car's behavior and is curious if it will move over one more lane to give a stopped vehicle more room.",
+            "event_type": "Positive: AccurateLaneKeeping",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "06:41",
+            "description": "The vehicle is approaching a bridge with other vehicles around. The autonomous system is keeping the car in the lane, and maintaining a safe distance from the other vehicles. The speed is appropriate for the road conditions.",
+            "event_type": "Positive: SafeInteractionWithVehicles",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "07:14",
+            "description": "The vehicle approaches railroad tracks with a flashing yellow light. The autonomous system handles the crossing without any issues, maintaining a safe speed and trajectory. The driver remains hands-off, and the system successfully navigates the railroad crossing.",
+            "event_type": "Positive: CorrectRoadConditionHandling",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "07:52",
+            "description": "The vehicle approaches a stop sign at an intersection. The autonomous system slows down and comes to a complete stop before the stop line. After ensuring the intersection is clear, the vehicle proceeds to make a left turn. The driver does not intervene.",
+            "event_type": "Positive: ProperSignAndLightCompliance",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "08:25",
+            "description": "The vehicle approaches a four-way stop. The car slows down and stops completely before the white line. The car waits for a few seconds and then proceeds to make a left turn after checking for cross traffic.",
+            "event_type": "Positive: ProperSignAndLightCompliance",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "08:51",
+            "description": "The vehicle approaches a four-way stop. The car slows down and stops completely before the white line. The car waits for a few seconds and then proceeds to go straight after checking for cross traffic.",
+            "event_type": "Positive: ProperSignAndLightCompliance",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "09:05",
+            "description": "The car approaches a stop sign and begins to slow down. The car creeps forward aggressively to see cross traffic. The car waits for a few cars to pass before proceeding through the intersection. The car successfully navigates the intersection.",
+            "event_type": "Positive: CorrectObstacleAvoidance",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "09:51",
+            "description": "The car rolls straight through the turn lane and in front of another car. The other car was far enough back that it was safe. The car successfully navigates the turn lane and merges into traffic.",
+            "event_type": "Positive: SafeInteractionWithVehicles",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "10:03",
+            "description": "The car is performing an unprotected left turn through a center turn lane. The driver is impressed with the confidence of the turn, stating that it is exactly what he wants. He contrasts this with the Cybertruck, which he says lacks the same confidence.",
+            "event_type": "Positive: AccurateLaneKeeping",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "11:33",
+            "description": "The car is driving on Wilson Boulevard, and the driver is discussing how the car always selects the left lane. He is unsure why it does this, but it happens every time. He wonders if it is due to cones in the distance or some other data layer.",
+            "event_type": "Negative: UnnecessaryOrUnsafeLaneChange",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "14:36",
+            "description": "The car is approaching a highway on-ramp and preparing to merge onto the highway. The car is slowing down to prepare for the turn. The driver is discussing a story about a Cybertruck crash while using FSD 13.2.4.",
+            "event_type": "Positive: AccurateRoutingAndNavigation",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "14:44",
+            "description": "The car is merging onto the highway. The car is accelerating to match the speed of the traffic on the highway. The driver is discussing a story about a Cybertruck crash while using FSD 13.2.4.",
+            "event_type": "Positive: SmoothAcceleration",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "17:05",
+            "description": "The vehicle is taking the exit on I-10. The driver mentions that the exit was perfect, indicating a successful navigation and execution of the exit maneuver by the FSD system. The car is driving at 66 mph.",
+            "event_type": "Positive: AccurateRoutingAndNavigation",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "17:45",
+            "description": "The driver is discussing the performance of FSD on the highway, mentioning a three-hour drive with minimal interventions. He highlights that the system performs well on long stretches of highway, suggesting a high level of reliability and accuracy in highway driving scenarios.",
+            "event_type": "Positive: AccurateLaneKeeping",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "19:32",
+            "description": "The car is driving through a construction zone with orange cones on the side of the road. The car is maintaining its lane and speed, but the driver is talking about how he gets distracted when reading text messages and tries to type a response on his phone.",
+            "event_type": "Positive: AccurateLaneKeeping",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "21:00",
+            "description": "The car displays a message \"Pay attention to the road\". The driver comments that this is not enough to make him actively monitor the road, but enough to remind him to look at the road or that he is looking at the screen too long.",
+            "event_type": "Negative: OtherEvent",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "22:50",
+            "description": "The vehicle is approaching an intersection and slowing down. The driver is explaining that the current situation is that people are being put in vehicles with a very good system that will only breed complacency in the mind of the driver.",
+            "event_type": "Positive: SmoothBraking",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "23:37",
+            "description": "The vehicle approaches a red traffic light and decelerates to a complete stop. The autonomous system correctly identifies the red light and responds appropriately by stopping the vehicle before the intersection, ensuring safety and compliance with traffic regulations.",
+            "event_type": "Positive: ProperSignAndLightCompliance",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "24:55",
+            "description": "The car is approaching a red car in front of it. The Tesla slows down to 0 mph and stops behind the red car. The Tesla is driving autonomously and there is no intervention from the driver.",
+            "event_type": "Positive: SmoothBraking",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "26:32",
+            "description": "The driver presses the 'P' button on the screen to put the car in park, but the system doesn't respond immediately. After a few attempts, the system finally registers the input and puts the car in park.",
+            "event_type": "Negative: OtherEvent",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "26:50",
+            "description": "The autonomous system is backing into a parking spot between chains. The driver is monitoring the system's progress and the rear camera view. The system seems to be having trouble with the chains.",
+            "event_type": "Negative: ObstacleAvoidanceFailure",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "26:56",
+            "description": "The driver puts the car in park and prepares to restart the FSD system, as the system is having trouble backing into the parking spot between the chains.",
+            "event_type": "Negative: ObstacleAvoidanceFailure",
+            "driver_action": "Intervened/Disengaged"
+        },
+        {
+            "timestamp": "27:04",
+            "description": "The autonomous vehicle successfully pulls out to the right from an awkward position as the driver predicted. The car accelerates smoothly and merges into the lane without any issues, demonstrating appropriate speed selection and accurate lane keeping.",
+            "event_type": "Positive: SmoothAcceleration",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "27:56",
+            "description": "The autonomous vehicle approaches a stop sign and slows down appropriately. The car comes to a complete stop before the stop line, demonstrating proper sign compliance. The vehicle then proceeds safely after checking for cross-traffic.",
+            "event_type": "Positive: ProperSignAndLightCompliance",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "28:47",
+            "description": "The car is turning left at an intersection with pedestrians in the crosswalk. The car has a green arrow and is honoring the pedestrians. The turn is perfectly handled and the pedestrians are treated well. The car did not do anything unexpected.",
+            "event_type": "Positive: SafeInteractionWithPedestrians",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "29:37",
+            "description": "The car is performing a U-turn. The car backs up very fast, arguably better than the driver. The car puts the steering wheel in a better location than the driver would. The car is able to avoid a truck that is making a U-turn.",
+            "event_type": "Positive: CorrectObstacleAvoidance",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "29:52",
+            "description": "The car is approaching pedestrians who are sweeping up glass or something on the road. The car is able to avoid the pedestrians and the glass. There is a beer bottle on the road and the pedestrians are trying to kick it out of the road.",
+            "event_type": "Positive: SafeInteractionWithPedestrians",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "30:09",
+            "description": "The autonomous driving system approaches a green light but proceeds very slowly, at 15 mph, even though the speed limit is 25 mph. The driver notes that a human driver would have accelerated to make the green light.",
+            "event_type": "Negative: IncorrectSpeedSelection",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "31:38",
+            "description": "The car approaches an intersection that the navigation system interprets as a traffic circle. The driver notes that if he wanted to go straight, he would just go straight. However, the planner has it going right, so it tries to do a U-turn here.",
+            "event_type": "Negative: NavigationError",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "32:05",
+            "description": "The vehicle slows down and stops in a parking spot. The driver wonders if the car will park itself. The driver then comments that this was a much better solution than last time. The driver did not intervene.",
+            "event_type": "Positive: CorrectObstacleAvoidance",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "33:37",
+            "description": "The car is backing up into traffic. The driver is monitoring the rear camera to see if there are any pedestrians or vehicles approaching. The steering wheel is turning a little bit, and the car is backing out slowly. The driver is impressed with the car's ability to back out of a spot.",
+            "event_type": "Positive: CorrectObstacleAvoidance",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "34:12",
+            "description": "The vehicle is approaching an intersection and slowing down. The driver is discussing how the vehicle handled the intersection on this version of the software. The vehicle slows down to 0 mph before making a right turn.",
+            "event_type": "Positive: AccurateRoutingAndNavigation",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "35:27",
+            "description": "The driver is discussing about the traffic circle and how the car is treating the intersection as a traffic circle, when it is not. He mentions that he will reroute after the parking choice.",
+            "event_type": "Negative: NavigationError",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "35:57",
+            "description": "The driver mentions that on the last version of the Cybertruck, the turns have a little bit of a jerk in them still. He is talking about the car's turning performance.",
+            "event_type": "Negative: JerkySteering",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "36:57",
+            "description": "The vehicle approaches an intersection and comes to a complete stop at the stop sign. The autonomous system successfully navigates the intersection, demonstrating proper sign compliance and safe interaction with other vehicles and pedestrians that may be present.",
+            "event_type": "Positive: ProperSignAndLightCompliance",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "37:19",
+            "description": "The vehicle slows down without any apparent reason, as there are no pedestrians or obstacles in sight. The driver finds this behavior interesting and notes that it doesn't happen very often without a pedestrian being present.",
+            "event_type": "Negative: AbruptBraking",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "42:10",
+            "description": "The car is driving through S curves and approaching traffic circles. The driver notes that the driving is flawless. The car is driving at 30 mph.",
+            "event_type": "Positive: CorrectRoadConditionHandling",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "42:26",
+            "description": "The car is approaching a traffic circle. The driver notes that the car merges smoothly with an oncoming vehicle. There is no steering wheel jitteriness. The car is driving at 11 mph.",
+            "event_type": "Positive: CorrectRoundaboutHandling",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "43:51",
+            "description": "The vehicle approaches an intersection and comes to a complete stop at the red light. The autonomous system successfully recognizes the traffic signal and responds appropriately by halting the vehicle before the intersection.",
+            "event_type": "Positive: ProperSignAndLightCompliance",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "44:00",
+            "description": "The car is at a complete stop at an intersection. The driver is explaining the differences between a neural network and a human brain. He is discussing how the human mind can see vehicles or motion through an obscuration like a tree with small gaps in it.",
+            "event_type": "Positive: AccurateLaneKeeping",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "45:00",
+            "description": "The vehicle is stopped at a traffic light. The driver is discussing the capabilities of the autonomous system, specifically its ability to detect motion through trees and other obstructions. The driver is not intervening at this time.",
+            "event_type": "Positive: OtherEvent",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "45:22",
+            "description": "The vehicle starts moving forward as the traffic light turns green. The driver is discussing the ability of the Tesla to contextualize inference through glass, such as detecting an emergency vehicle through the windshield of another car. The driver is not intervening at this time.",
+            "event_type": "Positive: SmoothAcceleration",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "47:37",
+            "description": "The vehicle is approaching an intersection and slowing down. The speed decreases from 17 mph to 6 mph. The driver is discussing the upcoming unprotected left turn and the need to clear the intersection due to the lack of a protected left turn arrow.",
+            "event_type": "Positive: SmoothBraking",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "47:44",
+            "description": "The vehicle is at a complete stop at the intersection, preparing for an unprotected left turn. The driver anticipates a green light and the need to assess and clear the intersection before proceeding with the turn, due to the absence of a protected left turn arrow.",
+            "event_type": "Positive: ProperSignAndLightCompliance",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "48:03",
+            "description": "The vehicle proceeds through a green light, but the driver notes that the acceleration was not as strong as they would have liked. The car accelerates through the green light, but the driver feels it could have been more assertive.",
+            "event_type": "Negative: HesitantAcceleration",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "48:25",
+            "description": "The driver describes the car's acceleration through a green light as weird, and mentions that they lazily made the turn. The driver is reflecting on the autonomous system's behavior and how it could be improved.",
+            "event_type": "Negative: HesitantAcceleration",
+            "driver_action": "NoActionTaken"
+        }
+    ]
+};
+
+var video_id = "ej_BDr3wfiE";
+document.getElementById('player').src = `https://www.youtube.com/embed/${video_id}?autoplay=1`;
+
+// --- MAIN SCRIPT ---
+(function() {
+  const eventsListEl = document.getElementById('eventsList');
+  const filterSelect = document.getElementById('filterType');
+  const youtubePlayer = document.getElementById('player');
+  const eventsData = data.results; // array of events
+
+  // Convert "Positive: Something" to "Positive", etc.
+  function getEventPolarity(eventType) {
+    // typically "Positive: X" or "Negative: Y"
+    if (!eventType) return 'Other';
+    return eventType.startsWith('Positive')
+      ? 'Positive'
+      : eventType.startsWith('Negative')
+      ? 'Negative'
+      : 'Other';
+  }
+
+  // Renders the list of events into the side panel
+  function renderEvents(filterVal = 'all') {
+    eventsListEl.innerHTML = ''; // clear existing
+    
+    // Filter events based on filterVal
+    const filtered = eventsData.filter(evt => {
+      if (filterVal === 'all') return true;
+      if (filterVal === 'disengaged') {
+        // Return only events where the driver has "Intervened/Disengaged"
+        return evt.driver_action === 'Intervened/Disengaged';
+      }
+      // For "Positive" or "Negative", use event polarity based on event_type
+      return getEventPolarity(evt.event_type) === filterVal;
+    });
+
+    filtered.forEach((evt, index) => {
+      // Create event item wrapper
+      const item = document.createElement('div');
+      item.className = 'event-item';
+
+      // Create event header container
+      const header = document.createElement('div');
+      header.className = 'event-header';
+
+      // Event type span
+      const evtType = document.createElement('span');
+      evtType.className = 'event-type';
+      evtType.textContent = evt.event_type;
+
+      // Timestamp span which also jumps to the video time on click
+      const ts = document.createElement('span');
+      ts.className = 'timestamp';
+      ts.textContent = evt.timestamp;
+      ts.addEventListener('click', (e) => {
+        const timeParts = evt.timestamp.split(':').map(x => parseInt(x, 10));
+        let seconds = 0;
+        if (timeParts.length === 2) {
+          seconds = timeParts[0] * 60 + timeParts[1];
+        } else if (timeParts.length === 3) {
+          seconds = timeParts[0] * 3600 + timeParts[1] * 60 + timeParts[2];
+        }
+        youtubePlayer.src = `https://www.youtube.com/embed/${video_id}?autoplay=1&start=${seconds}`;
+      });
+
+      // Append event type and timestamp to header
+      header.appendChild(evtType);
+      header.appendChild(ts);
+
+      // Create a description element that is hidden by default
+      const desc = document.createElement('div');
+      desc.className = 'description hidden';
+      desc.textContent = evt.description;
+
+      // Toggle description when the item is clicked (ignoring clicks on the timestamp)
+      item.addEventListener('click', (e) => {
+        if (e.target.classList.contains('timestamp')) return;
+        desc.classList.toggle('hidden');
+      });
+
+      // Build the event item element and append it to the list
+      item.appendChild(header);
+      item.appendChild(desc);
+      eventsListEl.appendChild(item);
+    });
+  }
+
+  // initial render
+  renderEvents();
+
+  // filter logic
+  filterSelect.addEventListener('change', (e) => {
+    renderEvents(e.target.value);
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+prompt: |
+  You are given a {clip_length_seconds} seconds (at most) video clip of an autonomous driving test. Please analyze it and identify any interesting driving events. 
+  For each event, include the timestamp of the event (in seconds), a 50 words description, the event type, and whether the driver intervened/disengaged.
+  Intervened/Disengaged is when the driver assists the autonomous system, or takes over the control of the vehicle.
+  Note the driver might discuss about a previous issue, but it's not an event. You should ONLY include events that are happening in the video clip.
+  Also, since the video cannot be longer than {clip_length_seconds} seconds, the timestamp should be between [0, {clip_length_seconds}].
+  ...
+
+clip_length_minutes: 1
+model: gemini-2.0-flash
+max_concurrency: 5
