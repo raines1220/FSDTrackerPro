@@ -88,34 +88,48 @@ pip install -r requirements.txt
 
 ## Generating Reports
 
-After processing videos, analysis results are stored in the `results/` directory in JSON format. Use the scripts in the `reports/` directory to generate insightful metrics:
+After processing videos, analysis results are stored as JSON files in a folder (by default, the `results/` directory). The reporting scripts now require you to pass the folder containing these JSON files as a command line argument.
+
+For example, you can generate reports by running:
 
 - Generate top negative events:
   ```bash
-  python reports/calculate_top_negtive_events.py
-  ```
-- Calculate positive event ratios:
-  ```bash
-  python reports/calculate_positive_ratio.py
-  ```
-- Compute hours per intervention:
-  ```bash
-  python reports/calculate_hour_per_intervention.py
+  python reports/calculate_top_negtive_events.py results/
   ```
 
+- Calculate positive event ratios:
+  ```bash
+  python reports/calculate_positive_ratio.py results/
+  ```
+
+- Compute hours per intervention:
+  ```bash
+  python reports/calculate_hour_per_intervention.py results/
+  ```
+
+- Calculate safety interventions ratio:
+  ```bash
+  python reports/calculate_safety_ratio.py results/
+  ```
 
 ## Project Structure
 
 - `fsd_tracker_pro/`
-  - `video_analyzer.py`: Core module for processing and analyzing video files using the Gemini API.
-  - `post_processor.py`: Handles post-processing and formatting of the analysis results.
-  - `response_model.py`: Defines data models for API responses.
-  - `video_splitter.py`: Utility module for splitting videos into clips.
-  - `config_reader.py`: Reads and parses configuration settings from `config.yaml`.
+  - Contains core modules for video processing and analysis. The analysis results (in JSON format) produced by these modules are used by the reporting scripts.
+
 - `reports/`
-  - `calculate_top_negtive_events.py`: Script to generate a report of top negative events detected.
-  - `calculate_positive_ratio.py`: Script to compute the ratio of positive events.
-  - `calculate_hour_per_intervention.py`: Script to calculate the hours per intervention from analysis data.
-- `results/`: Directory containing JSON files with analysis outputs for each processed video.
-- `main.py`: Entry point for initiating video analysis.
+  - Contains scripts that generate detailed reports from the analysis results. Note that each script now requires you to pass the folder containing the JSON results as a command line argument (default is the `results/` directory). For example:
+    ```bash
+    python reports/calculate_top_negtive_events.py results/
+    ```
+  - `calculate_top_negtive_events.py`: Generates a report of top negative events detected.
+  - `calculate_positive_ratio.py`: Computes the ratio of positive events.
+  - `calculate_hour_per_intervention.py`: Calculates the hours per intervention from analysis data.
+  - `calculate_safety_ratio.py`: Computes the safety interventions ratio.
+
+- `results/`
+  - Directory where JSON files with analysis outputs for each processed video are stored.
+
+- `main.py`
+  - Entry point for initiating video analysis.
 
