@@ -8,4 +8,4 @@ prompt: |
 
 clip_length_minutes: 1
 model: gemini-2.0-flash
-max_concurrency: 5
+max_concurrency: 8

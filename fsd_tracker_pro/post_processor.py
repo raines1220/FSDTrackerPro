@@ -22,6 +22,8 @@ def postprocess_clip_outputs(clip_outputs: List[List[Analysis]],
     }
 
     for i, output in enumerate(clip_outputs):
+        if type(output) != list or len(output) == 0:
+            continue
         clip_start_seconds = i * clip_length_minutes * 60
         clip_info = [
             {

@@ -83,6 +83,32 @@ class Event(Enum):
     # Other
     OTHER_NEGATIVE = "Negative: OtherEvent"
 
+    def is_safety_related(self) -> bool:
+        safety_related_events = { 
+            # Traffic Control Compliance
+            Event.PROPER_SIGN_AND_LIGHT_COMPLIANCE,
+            Event.FAILURE_TO_STOP_AT_SIGN_OR_LIGHT,
+            
+            # Road Conditions & Obstacles
+            Event.CORRECT_OBSTACLE_AVOIDANCE,
+            Event.OBSTACLE_AVOIDANCE_FAILURE,
+            
+            # Interactions with Other Road Users
+            Event.SAFE_INTERACTION_WITH_VEHICLES,
+            Event.SAFE_INTERACTION_WITH_PEDESTRIANS,
+            Event.PROPER_INTERACTION_WITH_EMERGENCY_VEHICLES,
+            Event.UNSAFE_INTERACTION_WITH_VEHICLES,
+            Event.UNSAFE_INTERACTION_WITH_PEDESTRIANS,
+            Event.IMPROPER_RESPONSE_TO_EMERGENCY_VEHICLES,
+        }
+        return self in safety_related_events
+    
+    def from_string(event_str: str) -> 'Event':
+        for event in Event:
+            if event.value == event_str:
+                return event
+        raise ValueError(f"Invalid event string: {event_str}")
+
 class Action(Enum):
     INTERVENED_OR_DISENGAGED = "Intervened/Disengaged"
     NO_ACTION_TAKEN = "NoActionTaken"

@@ -1,0 +1,220 @@
+{
+    "version": "0.1",
+    "model_used": "gemini-2.0-flash",
+    "prompt_used": "You are given a 60 seconds (at most) video clip of an autonomous driving test. Please analyze it and identify any interesting driving events. \nFor each event, include the timestamp of the event (in seconds), a 50 words description, the event type, and whether the driver intervened/disengaged.\nIntervened/Disengaged is when the driver assists the autonomous system, or takes over the control of the vehicle.\nNote the driver might discuss about a previous issue, but it's not an event. You should ONLY include events that are happening in the video clip.\nAlso, since the video cannot be longer than 60 seconds, the timestamp should be between [0, 60].\n...\n",
+    "summary": {
+        "total_duration": "21:34",
+        "events": {
+            "total_events": 34,
+            "positive_events": 24,
+            "negative_events": 10,
+            "interventions": 4
+        }
+    },
+    "results": [
+        {
+            "timestamp": "01:58",
+            "description": "The car approaches the first speed bump on the road. The autonomous system seems to be handling the speed bump appropriately, maintaining a safe and controlled speed as it approaches the obstacle.",
+            "event_type": "Positive: CorrectRoadConditionHandling",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "02:25",
+            "description": "The car is approaching an intersection and starts to creep forward, but the driver intervenes and stops the car because there is a car in the middle lane. The car then waits for the car to pass before proceeding with the turn.",
+            "event_type": "Negative: UnsafeInteractionWithVehicles",
+            "driver_action": "Intervened/Disengaged"
+        },
+        {
+            "timestamp": "03:07",
+            "description": "The autonomous system approaches an intersection and slows down, preparing to make a left turn. The driver expresses relief that the system did not proceed, as he was unsure if it could see through the trees to detect oncoming traffic.",
+            "event_type": "Positive: CorrectObstacleAvoidance",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "03:20",
+            "description": "The autonomous system successfully executes a U-turn. The driver notes that the gap was wide and there was no traffic, but the maneuver was well-executed.",
+            "event_type": "Positive: AccurateLaneKeeping",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "03:45",
+            "description": "The driver disengages the autonomous system to manually prepare the route for the next section of the test.",
+            "event_type": "Negative: ManualSpeedAdjustmentRequired",
+            "driver_action": "Intervened/Disengaged"
+        },
+        {
+            "timestamp": "03:53",
+            "description": "The autonomous system approaches a stop sign and comes to a complete stop. It then performs a creep forward to improve visibility before proceeding with an unprotected left turn.",
+            "event_type": "Positive: ProperSignAndLightCompliance",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "04:05",
+            "description": "The car smoothly enters the left-hand lane, demonstrating accurate lane keeping and appropriate lane change behavior. The vehicle is driving at a speed of 24 mph. The driver is monitoring the autonomous system and providing commentary on its performance.",
+            "event_type": "Positive: AccurateLaneKeeping",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "05:38",
+            "description": "The vehicle approaches a left turn at an intersection. The autonomous system successfully navigates the turn, maintaining a safe speed and trajectory. The turn is smooth and well-executed, demonstrating the system's ability to handle turns in a controlled manner.",
+            "event_type": "Positive: AccurateLaneKeeping",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "05:56",
+            "description": "The vehicle approaches an intersection and prepares to make a right turn. The autonomous system successfully navigates the turn, maintaining a safe speed and trajectory. The turn is smooth and well-executed, demonstrating the system's ability to handle turns in a controlled manner.",
+            "event_type": "Positive: AccurateLaneKeeping",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "06:14",
+            "description": "The vehicle is approaching a solid red light with cars turning in the opposing traffic. The autonomous system waits for a gap in the traffic before proceeding. The system finds a suitable gap and proceeds to cross the intersection after the turning cars have passed.",
+            "event_type": "Positive: CorrectObstacleAvoidance",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "07:44",
+            "description": "The car is approaching a small cut in the median and is planning to do a U-turn. There is a car behind, but the driver decides to let the autonomous system proceed with the U-turn. The car slows down significantly to perform the U-turn.",
+            "event_type": "Negative: UnsafeInteractionWithVehicles",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "08:48",
+            "description": "The autonomous driving system approaches a stop light at an intersection. The system misses the protected green arrow, so it will have to wait through a light cycle. The car slows down to a stop at the intersection.",
+            "event_type": "Negative: FailureToStopAtSignOrLight",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "09:07",
+            "description": "The autonomous driving system is approaching a white stop line at a railroad crossing. The system proceeds past the stop line without stopping. The driver is observing the behavior of the system.",
+            "event_type": "Negative: FailureToStopAtSignOrLight",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "10:11",
+            "description": "The autonomous system slows down nicely behind a Tesla that is turning off the road to go to McDonald's. The system appropriately recognizes the slowing car and adjusts its speed to maintain a safe following distance.",
+            "event_type": "Positive: SmoothBraking",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "10:21",
+            "description": "The driver deletes a waypoint and hits done to reroute the navigation. The system quickly reroutes the navigation to the new destination. The autonomous system is able to quickly adapt to the change in the route and provide updated directions.",
+            "event_type": "Positive: AccurateRoutingAndNavigation",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "10:33",
+            "description": "The autonomous system approaches a stop sign and prepares to make a right-hand turn into traffic. The system appropriately recognizes the stop sign and slows down to prepare for the turn. The autonomous system is able to safely navigate the intersection.",
+            "event_type": "Positive: ProperSignAndLightCompliance",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "10:38",
+            "description": "The autonomous system makes a right turn and jumps onto Roosevelt road. The system appropriately recognizes the turn and executes it smoothly. The autonomous system is able to safely navigate the turn and continue on the planned route.",
+            "event_type": "Positive: SmoothAcceleration",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "11:25",
+            "description": "The driver is discussing the possibility of being teased into crossing the railroad tracks and then the light turns red. He mentions that you can be in a dangerous situation, but as long as you have a bailout scenario, you should be fine.",
+            "event_type": "Negative: OtherEvent",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "12:44",
+            "description": "The car is approaching an intersection to take a left turn. Another car is approaching from behind and speeding up. The driver mentions that the car should have gotten over earlier, and now it may be boxed out. The driver is being flashed by the other car.",
+            "event_type": "Negative: UnsafeInteractionWithVehicles",
+            "driver_action": "Intervened/Disengaged"
+        },
+        {
+            "timestamp": "13:11",
+            "description": "The car is accelerating after a flashing yellow light. The driver is commenting that they are going over railroad tracks. The planner waited too long and did not use acceleration to get over in the lane, only used the slow down there.",
+            "event_type": "Negative: UnnecessaryOrUnsafeLaneChange",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "13:34",
+            "description": "The car is approaching a stop sign. The driver is looking left and right. The car stops and then creeps forward. The driver is looking left and right again, and then the car proceeds through the intersection.",
+            "event_type": "Positive: ProperSignAndLightCompliance",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "13:57",
+            "description": "The car is driving on a narrow road. The driver is commenting that the car used to do all of this, but now it doesn't even flinch. The car makes a little jog to the right and then to the left.",
+            "event_type": "Positive: AccurateLaneKeeping",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "14:17",
+            "description": "The car went over a speed hump at 27 mph. The driver mentioned that it did not look like the car saw the speed hump. The car did not slow down for the speed hump.",
+            "event_type": "Negative: IncorrectRoadConditionHandling",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "14:42",
+            "description": "The car slowed down for a speed hump. The car slowed down to 13 mph. The driver mentioned that the car saw the speed hump and slowed down appropriately.",
+            "event_type": "Positive: CorrectRoadConditionHandling",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "15:01",
+            "description": "The autonomous vehicle approaches a stop sign and slows down to a complete stop. The driver mentions that they need to wait for traffic from the left before proceeding. The system correctly identifies the stop sign and reacts accordingly.",
+            "event_type": "Positive: ProperSignAndLightCompliance",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "15:14",
+            "description": "The driver manually reroutes the navigation system. The driver touches the screen to change the route. The autonomous system is disengaged while the driver is rerouting.",
+            "event_type": "Negative: ManualSpeedAdjustmentRequired",
+            "driver_action": "Intervened/Disengaged"
+        },
+        {
+            "timestamp": "15:41",
+            "description": "The autonomous vehicle approaches an unprotected left turn. The driver notes that the traffic is coming over a bridge and could be fast. The system slows down and prepares to make the left turn when it is safe.",
+            "event_type": "Positive: CorrectObstacleAvoidance",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "16:37",
+            "description": "The car drives over some debris (moss) on the road. The car straddles right over it. The system doesn't seem to react to the debris at all. The driver mentions that it's fine.",
+            "event_type": "Positive: CorrectRoadConditionHandling",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "17:46",
+            "description": "The vehicle is approaching an intersection and the speed is decreasing from 27 mph to 14 mph. The car is slowing down to prepare for the upcoming turn. The system appears to be handling the speed adjustment appropriately for the intersection.",
+            "event_type": "Positive: SmoothBraking",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "17:50",
+            "description": "The vehicle is making a left turn at an intersection. The car is slowing down to 13 mph to make the turn. The system appears to be handling the turn appropriately and staying within the lane markings.",
+            "event_type": "Positive: AccurateLaneKeeping",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "18:07",
+            "description": "The vehicle approaches a stop sign at an intersection. The car slows down and comes to a complete stop before the stop line, demonstrating compliance with traffic regulations and safe driving behavior in an autonomous mode.",
+            "event_type": "Positive: ProperSignAndLightCompliance",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "18:57",
+            "description": "The vehicle approaches railroad tracks at an intersection. The car slows down and comes to a complete stop before the stop line, demonstrating compliance with traffic regulations and safe driving behavior in an autonomous mode.",
+            "event_type": "Positive: ProperSignAndLightCompliance",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "19:03",
+            "description": "The autonomous system is waiting at a red light, even though the right lane is open. The system waits for a car to pass in the right lane before proceeding with the right turn. The driver notes that a human driver might have taken the right lane earlier.",
+            "event_type": "Positive: ProperSignAndLightCompliance",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "20:36",
+            "description": "The vehicle is approaching a red traffic light and starts to decelerate. The speed decreases from 45 mph to 0 mph. The vehicle stops at the red light. The autonomous system seems to be working as expected.",
+            "event_type": "Positive: SmoothBraking",
+            "driver_action": "NoActionTaken"
+        }
+    ]
+}

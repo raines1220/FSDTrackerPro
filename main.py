@@ -10,27 +10,48 @@ load_dotenv()
 
 def main():
     if len(sys.argv) < 2:
-        print("Usage: python main.py <path_to_local_video>")
+        print("Usage: python main.py <path_to_video_1> <path_to_video_2> ...")
         sys.exit(1)
 
-    video_path = sys.argv[1]
-    if not os.path.isfile(video_path):
-        print(f"Error: {video_path} does not exist or is not a file.")
+    input_video_paths = sys.argv[1:]
+    valid_video_paths = []
+    for video_path in input_video_paths:
+        if not os.path.isfile(video_path):
+            print(f"Error: {video_path} does not exist or is not a file. Skipping.")
+        else:
+            valid_video_paths.append(video_path)
+
+    if not valid_video_paths:
+        print("No valid video files provided.")
         sys.exit(1)
 
-    # Load config
+    # Load configuration
     config = read_config("config.yaml")
 
-    # Create VideoAnalyzer with configuration, API key, and clip length from config.
+    # Create VideoAnalyzer instance
     analyzer = VideoAnalyzer(api_key=os.environ.get("GEMINI_API_KEY"), config=config)
 
-    # Analyze video using the high-level API.
-    results = asyncio.run(analyzer.analyze_video_async(video_path))
-    output_path = f"results/{video_path.split('/')[-1]}.json"
+    # Ensure output directory exists
     os.makedirs("results", exist_ok=True)
-    json.dump(results, open(output_path, "w"), indent=4)
 
-    print(f"Done! Results saved to {output_path}")
+    # Define an async function to process videos sequentially instead of concurrently
+    async def process_videos_sequentially():
+        for video_path in valid_video_paths:
+            try:
+                result = await analyzer.analyze_video_async(video_path)
+            except Exception as exc:
+                print(f"Error processing {video_path}: {exc}")
+                continue
+
+            filename = os.path.basename(video_path)
+            output_path = os.path.join("results", f"{filename}.json")
+            with open(output_path, "w") as outfile:
+                json.dump(result, outfile, indent=4)
+            print(f"Done! Results for '{video_path}' saved to '{output_path}'.")
+
+    # Run the sequential processing function
+    asyncio.run(process_videos_sequentially())
+
 
 if __name__ == "__main__":
     main() 
