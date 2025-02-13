@@ -1,0 +1,130 @@
+{
+    "version": "0.1",
+    "model_used": "gemini-2.0-flash",
+    "prompt_used": "You are given a 60 seconds (at most) video clip of an autonomous driving test. Please analyze it and identify any interesting driving events. \nFor each event, include the timestamp of the event (in seconds), a 50 words description, the event type, and whether the driver intervened/disengaged.\nIntervened/Disengaged is when the driver assists the autonomous system, or takes over the control of the vehicle.\nNote the driver might discuss about a previous issue, but it's not an event. You should ONLY include events that are happening in the video clip.\nAlso, since the video cannot be longer than 60 seconds, the timestamp should be between [0, 60].\n...\n",
+    "summary": {
+        "total_duration": "09:21",
+        "events": {
+            "total_events": 19,
+            "positive_events": 10,
+            "negative_events": 9,
+            "interventions": 2
+        }
+    },
+    "results": [
+        {
+            "timestamp": "00:15",
+            "description": "The driver mentions that the auto wipers are on even though it's a clear day. He is unsure why the wipers are activated. This is not a critical event, but it's an unexpected behavior of the autonomous system.",
+            "event_type": "Negative: OtherEvent",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "00:44",
+            "description": "The driver notices that the beta testing profile is not correctly set. He needs to manually adjust the settings to ensure the autonomous system operates under the intended beta testing parameters for the drive.",
+            "event_type": "Negative: OtherEvent",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "01:53",
+            "description": "The autonomous system is approaching a median to make a left turn. The driver notes that the system seems uncomfortable going to the median. The system proceeds to wait in the median for an opening in traffic to complete the turn.",
+            "event_type": "Negative: OtherEvent",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "02:05",
+            "description": "The car is approaching a median. The car chose the gap well to get to the median, but it did not choose its profile to fit in the median correctly. The driver disengaged to fit into the median appropriately because the rear end was sticking out.",
+            "event_type": "Negative: IncorrectRoadConditionHandling",
+            "driver_action": "Intervened/Disengaged"
+        },
+        {
+            "timestamp": "02:48",
+            "description": "The car is approaching a left turn. The car is not doing the left hand turn. The route is not working today. The driver is trying to fix the route. The car is still not doing the left hand turn.",
+            "event_type": "Negative: NavigationError",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "03:00",
+            "description": "The autonomous vehicle is approaching a left turn at a roundabout. The driver engages the system at the creep limit. The system hesitates to turn left in front of a truck, even though there is a gap. The driver intervenes.",
+            "event_type": "Negative: HesitantAcceleration",
+            "driver_action": "Intervened/Disengaged"
+        },
+        {
+            "timestamp": "04:12",
+            "description": "The autonomous vehicle is approaching a roundabout with heavy traffic. It stops at the yield sign and assesses the traffic situation, waiting for a safe gap to enter. The car creeps forward slightly, positioning itself for better visibility.",
+            "event_type": "Positive: CorrectObstacleAvoidance",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "04:52",
+            "description": "The autonomous vehicle identifies a small gap in the traffic flow and confidently commits to entering the roundabout. It accelerates smoothly and merges into the traffic without hesitation, successfully navigating the roundabout.",
+            "event_type": "Positive: SafeInteractionWithVehicles",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "05:53",
+            "description": "The car joined the lane slowly, and the acceleration curve was not ideal. It needed to get to 50 mph quicker because of the cars coming from behind. The autonomous system should have accelerated faster to match the speed of the traffic.",
+            "event_type": "Negative: HesitantAcceleration",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "05:00",
+            "description": "The autonomous system is approaching an intersection with a stop sign. There are cars approaching from the left and right. The system is evaluating the gaps in traffic to determine when it is safe to proceed through the intersection.",
+            "event_type": "Positive: SafeInteractionWithVehicles",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "05:45",
+            "description": "The autonomous system made a good decision not to creep forward into the intersection because the cars were moving too fast. It waited for a larger gap in traffic before proceeding.",
+            "event_type": "Positive: SafeInteractionWithVehicles",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "05:53",
+            "description": "The autonomous system identified a gap in traffic and committed to entering the intersection. It accelerated quickly to merge into the flow of traffic. The system made a good commit and accelerated all the way.",
+            "event_type": "Positive: SafeInteractionWithVehicles",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "06:00",
+            "description": "The autonomous system went into the left lane with a little bit of an overshoot. The driver notes that when it doesn't have to fit into the median, the initial commit is good. The driver also notes that waiting on traffic from the right is harder.",
+            "event_type": "Positive: AccurateLaneKeeping",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "06:36",
+            "description": "The autonomous system approaches a stop sign and comes to a full stop. The driver notes that there is a good gap on the left and that this is going to be a gimme after these two cars. There is no traffic from the right.",
+            "event_type": "Positive: ProperSignAndLightCompliance",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "06:52",
+            "description": "The autonomous system makes a left turn at the intersection. The driver notes that the system is going straight through without going to the right. The driver notes that it used to in version 10.69.",
+            "event_type": "Positive: AccurateRoutingAndNavigation",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "07:02",
+            "description": "The car is driving on a straight road with trees on both sides. The driver is discussing the car's previous behavior of turning right and then left to fit into the median. He mentions that the neural nets are going straight for it.",
+            "event_type": "Negative: OtherEvent",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "07:29",
+            "description": "The car approaches a four-way intersection with a stop sign. The driver mentions that there is no traffic from the left or right. The car proceeds to make a left turn after stopping at the stop sign.",
+            "event_type": "Positive: ProperSignAndLightCompliance",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "07:44",
+            "description": "The car is driving on a straight road with no traffic. The driver mentions that the car knows how to drive in no traffic scenarios, but it's the traffic scenarios that give it trouble. He says he needs to get better at timing.",
+            "event_type": "Negative: OtherEvent",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "08:21",
+            "description": "The autonomous system identifies a small gap in traffic and attempts to merge into it. The driver comments that the system needs to commit to the merge. The system successfully merges into the gap.",
+            "event_type": "Positive: AppropriateLaneChange",
+            "driver_action": "NoActionTaken"
+        }
+    ]
+}

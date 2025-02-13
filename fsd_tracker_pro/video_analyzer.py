@@ -24,7 +24,7 @@ class VideoAnalyzer:
         self.semaphore = asyncio.Semaphore(self.max_concurrency)
         self.retry_wait = 5
 
-    def _retry_on_connection_reset(self, func):
+    def _retry(self, func):
         while True:
             try:
                 return func()
@@ -32,8 +32,13 @@ class VideoAnalyzer:
                 if "Connection reset by peer" in str(e):
                     time.sleep(self.retry_wait)
                     continue
+                else:
+                    raise
+            except requests.exceptions.ReadTimeout as e:
+                time.sleep(self.retry_wait)
+                continue
     
-    async def _retry_on_connection_reset_async(self, func):
+    async def _retry_async(self, func):
         while True:
             try:
                 return await func()
@@ -41,6 +46,9 @@ class VideoAnalyzer:
                 if "Connection reset by peer" in str(e):
                     await asyncio.sleep(self.retry_wait)
                     continue
+            except requests.exceptions.ReadTimeout as e:
+                await asyncio.sleep(self.retry_wait)
+                continue
 
     def analyze_clip(self, clip_path: str, prompt: str) -> list[Analysis]:
         """
@@ -50,10 +58,10 @@ class VideoAnalyzer:
         text using the given prompt (augmented with clip information).
         """
         # Upload the video clip file.
-        uploaded_file = self._retry_on_connection_reset(lambda: self.client.files.upload(file=clip_path))
+        uploaded_file = self._retry(lambda: self.client.files.upload(file=clip_path))
         while uploaded_file.state != "ACTIVE":
             time.sleep(self.retry_wait)
-            uploaded_file = self._retry_on_connection_reset(lambda: self.client.files.get(name=uploaded_file.name))
+            uploaded_file = self._retry(lambda: self.client.files.get(name=uploaded_file.name))
         # wait until the file is ready
         file_uri = uploaded_file.uri  # Get the URI from the file object
         mime_type = uploaded_file.mime_type  # Get the mime_type from the file object
@@ -61,7 +69,7 @@ class VideoAnalyzer:
         # Generate content using the uploaded file and the given prompt.
         model = self.config.get("model", "gemini-2.0-flash")
        
-        response = self._retry_on_connection_reset(lambda: self.client.models.generate_content(
+        response = self._retry(lambda: self.client.models.generate_content(
             model=model,
             contents=[
             types.Part.from_text(text=prompt), 
@@ -74,7 +82,7 @@ class VideoAnalyzer:
             },
         ))
         # finished, delete the file
-        self._retry_on_connection_reset(lambda: self.client.files.delete(name=uploaded_file.name))
+        self._retry(lambda: self.client.files.delete(name=uploaded_file.name))
         return response.parsed if response and hasattr(response, "parsed") else []
     
     def _get_video_duration(self, video_path: str) -> int:
@@ -154,15 +162,15 @@ class VideoAnalyzer:
     # Added asynchronous methods for improved performance
     async def analyze_clip_async(self, i: int, clip_path: str, prompt: str) -> list[Analysis]:
         async with self.semaphore:
-            uploaded_file = await self._retry_on_connection_reset_async(lambda: self.client.aio.files.upload(file=clip_path))
+            uploaded_file = await self._retry_async(lambda: self.client.aio.files.upload(file=clip_path))
             while uploaded_file.state != "ACTIVE":
                 await asyncio.sleep(self.retry_wait)
-                uploaded_file = await self._retry_on_connection_reset_async(lambda: self.client.aio.files.get(name=uploaded_file.name))
+                uploaded_file = await self._retry_async(lambda: self.client.aio.files.get(name=uploaded_file.name))
             file_uri = uploaded_file.uri
             mime_type = uploaded_file.mime_type
             model = self.config.get("model", "gemini-2.0-flash")
                 
-            response = await self._retry_on_connection_reset_async(lambda: self.client.aio.models.generate_content(
+            response = await self._retry_async(lambda: self.client.aio.models.generate_content(
                 model=model,
                 contents=[
                 types.Part.from_text(text=prompt),
@@ -176,7 +184,7 @@ class VideoAnalyzer:
             ))
 
             # finished, delete the file
-            await self._retry_on_connection_reset_async(lambda: self.client.aio.files.delete(name=uploaded_file.name))
+            await self._retry_async(lambda: self.client.aio.files.delete(name=uploaded_file.name))
 
         return (i, response.parsed) if response and hasattr(response, "parsed") else (i, [])
 

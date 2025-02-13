@@ -1,0 +1,166 @@
+{
+    "version": "0.1",
+    "model_used": "gemini-2.0-flash",
+    "prompt_used": "You are given a 60 seconds (at most) video clip of an autonomous driving test. Please analyze it and identify any interesting driving events. \nFor each event, include the timestamp of the event (in seconds), a 50 words description, the event type, and whether the driver intervened/disengaged.\nIntervened/Disengaged is when the driver assists the autonomous system, or takes over the control of the vehicle.\nNote the driver might discuss about a previous issue, but it's not an event. You should ONLY include events that are happening in the video clip.\nAlso, since the video cannot be longer than 60 seconds, the timestamp should be between [0, 60].\n...\n",
+    "summary": {
+        "total_duration": "13:37",
+        "events": {
+            "total_events": 25,
+            "positive_events": 12,
+            "negative_events": 13,
+            "interventions": 2
+        }
+    },
+    "results": [
+        {
+            "timestamp": "00:49",
+            "description": "The autonomous driving system issues an alert, prompting the driver to pay attention to the road. This suggests a potential issue with the system's ability to handle the current driving situation or a perceived lack of driver attention.",
+            "event_type": "Negative: OtherEvent",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "00:55",
+            "description": "The vehicle approaches a stop sign at an intersection. The autonomous system successfully brings the car to a complete stop, demonstrating compliance with traffic regulations and proper execution of the Nitsa stop.",
+            "event_type": "Positive: ProperSignAndLightCompliance",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "01:09",
+            "description": "The autonomous system attempts to cross a busy intersection with a small gap in traffic. The car accelerates, but the driver expresses concern and seems ready to disengage. The car successfully crosses the intersection, but the driver is visibly shaken by the experience.",
+            "event_type": "Negative: UnsafeInteractionWithVehicles",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "02:06",
+            "description": "The autonomous system merges into the lane with oncoming traffic. The driver expresses discomfort with the system's decision to merge into the first available gap, feeling it was too close for comfort. The driver was not confident that the system would not leave the tail out.",
+            "event_type": "Negative: UnsafeInteractionWithVehicles",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "02:48",
+            "description": "The autonomous system approaches a roundabout. The driver identifies a good gap for merging after one car passes. The system waits due to cars approaching from the right. The system merges into the median comfortably and then merges into the roundabout perfectly.",
+            "event_type": "Positive: CorrectRoundaboutHandling",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "03:05",
+            "description": "The car approaches a roundabout and stops at the stop sign. The driver is looking left and right to check for incoming traffic. The car is waiting for the traffic to clear before entering the roundabout.",
+            "event_type": "Positive: ProperSignAndLightCompliance",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "03:06",
+            "description": "The car is at the roundabout, and the driver is looking left and right to check for incoming traffic. The car is waiting for the traffic to clear before entering the roundabout. The car is driving slowly.",
+            "event_type": "Positive: CorrectRoundaboutHandling",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "04:07",
+            "description": "The autonomous system waits for a gap in traffic before merging into the left lane. It then successfully merges into the left lane to continue the route. The system handles the merge safely and efficiently, demonstrating its ability to navigate complex traffic situations.",
+            "event_type": "Positive: AppropriateLaneChange",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "04:23",
+            "description": "The autonomous system merges into the middle lane, but it pauses before doing so. This behavior is repeated three times in a row. The system then accelerates, brakes, and changes into the right lane without any need to do the braking.",
+            "event_type": "Negative: AbruptBraking",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "05:15",
+            "description": "The vehicle approaches a roundabout and slows down to yield to oncoming traffic. The autonomous system seems to be waiting for a safe gap to enter the roundabout.",
+            "event_type": "Positive: CorrectRoadConditionHandling",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "05:29",
+            "description": "The vehicle stops at the roundabout, even though there appears to be enough space to proceed. The driver expresses surprise and concern about the unnecessary stop.",
+            "event_type": "Negative: DelayedBraking",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "05:34",
+            "description": "The vehicle brakes aggressively while driving on a straight road. The driver expresses concern that this behavior could cause problems if there were cars behind them.",
+            "event_type": "Negative: AbruptBraking",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "06:23",
+            "description": "The vehicle is joining the left lane. There is a tug, and the driver mentions that you can probably see the regen on that. It stayed in the left lane this time. There is no car behind, so it didn't jump into the middle lane after that braking tug.",
+            "event_type": "Negative: AbruptBraking",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "07:00",
+            "description": "The car is slowing down from 33 mph to 10 mph. The driver is discussing how the car is behaving and how the behavior got in there. The driver is wondering if the behavior came from a clip where a driver did that.",
+            "event_type": "Negative: AbruptBraking",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "07:48",
+            "description": "The driver disengages the autopilot and takes over the control of the vehicle. The driver is now driving manually. The driver is going to try another test.",
+            "event_type": "Negative: OtherEvent",
+            "driver_action": "Intervened/Disengaged"
+        },
+        {
+            "timestamp": "07:54",
+            "description": "The driver is discussing how the trailer is going to try to do an unprotected left-hand turn. The driver is pointing out that it is a truck with a trailer.",
+            "event_type": "Negative: UnsafeInteractionWithVehicles",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "08:28",
+            "description": "The autonomous system successfully navigated a complex intersection with no traffic light, where drivers often roll through the stop sign. The car waited for a safe gap in traffic before proceeding, demonstrating appropriate caution and decision-making in a challenging scenario.",
+            "event_type": "Positive: CorrectObstacleAvoidance",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "08:43",
+            "description": "The autonomous system initiated a left turn into a median but then paused abruptly, slowing down to 18 mph. This hesitation was unexpected and potentially unsafe, as it could have caused a following vehicle to rear-end the autonomous vehicle.",
+            "event_type": "Negative: AbruptBraking",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "09:00",
+            "description": "The driver is discussing about a previous maneuver, where the car fit into the median appropriately and did not pre-roll onto the car. He is thinking that the pre-roll on the first one is making him think it needed to get its rear end out of the road.",
+            "event_type": "Negative: OtherEvent",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "09:33",
+            "description": "The driver is discussing about the car doing pretty good except for the new weird tug after it merges in. He also mentions that the lane commits are good, the gaps it's going for is good, and the acceleration is good.",
+            "event_type": "Positive: OtherEvent",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "10:11",
+            "description": "The autonomous vehicle attempts to merge into traffic, but the driver expresses concern about the small gap. The vehicle successfully merges into traffic without any intervention.",
+            "event_type": "Positive: AppropriateLaneChange",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "11:37",
+            "description": "The car approaches a roundabout with heavy traffic from the right. It stops and slowly creeps forward. The car waits for a gap in the traffic from the left, then proceeds into the roundabout. The car pauses slightly before entering, but successfully navigates the roundabout.",
+            "event_type": "Positive: CorrectRoundaboutHandling",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "12:04",
+            "description": "The autonomous system successfully merges into the lane after a car passes. The driver praises the timing and execution of the maneuver, noting that there was no car immediately behind, making the merge safe and well-timed. The system is able to join the median and proceed from the median into traffic.",
+            "event_type": "Positive: AppropriateLaneChange",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "12:44",
+            "description": "The driver mentions a previous instance where they had to tug the steering wheel, indicating a moment where the autonomous system's performance was not ideal. The driver suggests that the tug was due to oncoming cars from the right, implying a potential issue with the system's handling of right-side traffic.",
+            "event_type": "Negative: JerkySteering",
+            "driver_action": "Intervened/Disengaged"
+        },
+        {
+            "timestamp": "13:00",
+            "description": "The driver is testing the autonomous driving system. He mentions that the previous unprotected left turn was good and he didn't disengage. He also mentions that the biggest problem is the deceleration when joining the left lane after leaving the median.",
+            "event_type": "Positive: AccurateLaneKeeping",
+            "driver_action": "NoActionTaken"
+        }
+    ]
+}

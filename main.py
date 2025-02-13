@@ -37,11 +37,7 @@ def main():
     # Define an async function to process videos sequentially instead of concurrently
     async def process_videos_sequentially():
         for video_path in valid_video_paths:
-            try:
-                result = await analyzer.analyze_video_async(video_path)
-            except Exception as exc:
-                print(f"Error processing {video_path}: {exc}")
-                continue
+            result = await analyzer.analyze_video_async(video_path)
 
             filename = os.path.basename(video_path)
             output_path = os.path.join("results", f"{filename}.json")

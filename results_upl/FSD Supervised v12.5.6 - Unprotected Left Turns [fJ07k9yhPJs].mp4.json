@@ -1,0 +1,160 @@
+{
+    "version": "0.1",
+    "model_used": "gemini-2.0-flash",
+    "prompt_used": "You are given a 60 seconds (at most) video clip of an autonomous driving test. Please analyze it and identify any interesting driving events. \nFor each event, include the timestamp of the event (in seconds), a 50 words description, the event type, and whether the driver intervened/disengaged.\nIntervened/Disengaged is when the driver assists the autonomous system, or takes over the control of the vehicle.\nNote the driver might discuss about a previous issue, but it's not an event. You should ONLY include events that are happening in the video clip.\nAlso, since the video cannot be longer than 60 seconds, the timestamp should be between [0, 60].\n...\n",
+    "summary": {
+        "total_duration": "10:56",
+        "events": {
+            "total_events": 24,
+            "positive_events": 19,
+            "negative_events": 5,
+            "interventions": 2
+        }
+    },
+    "results": [
+        {
+            "timestamp": "00:52",
+            "description": "The autonomous driving system is approaching an intersection with heavy traffic from the right. The system stops at the median, but the driver says that the system might have been able to make the turn into the left lane.",
+            "event_type": "Negative: DelayedBraking",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "01:00",
+            "description": "The driver stopped the car because he was turning on the camera and not looking back. The car was rapidly approaching traffic from the left. The driver stopped right at the edge of the road. The driver thinks the car would have made it.",
+            "event_type": "Negative: UnsafeInteractionWithVehicles",
+            "driver_action": "Intervened/Disengaged"
+        },
+        {
+            "timestamp": "01:55",
+            "description": "The car is approaching a roundabout. The car stops and creeps forward. There is some traffic in the roundabout. The car is trying to get the screen just right for the viewer.",
+            "event_type": "Positive: CorrectRoundaboutHandling",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "02:00",
+            "description": "The autonomous system is approaching an intersection and creeping forward to improve visibility. The driver is discussing the creep behavior and comparing it to the creep behavior of a Cybertruck.",
+            "event_type": "Positive: SmoothAcceleration",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "02:30",
+            "description": "The autonomous system is waiting for cross traffic to clear before proceeding through an intersection. The driver is monitoring the traffic and providing commentary on the system's decision-making process.",
+            "event_type": "Positive: CorrectObstacleAvoidance",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "02:46",
+            "description": "The autonomous system identifies an opportunity to change lanes to the left to avoid waiting behind a slower vehicle. The driver encourages the system to make the lane change.",
+            "event_type": "Positive: AppropriateLaneChange",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "02:50",
+            "description": "The autonomous system successfully executes a lane change to the left to pass a slower vehicle. The driver comments on the system's decision-making and execution of the maneuver.",
+            "event_type": "Positive: SmoothAcceleration",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "03:00",
+            "description": "The driver is discussing a previous disengagement scenario, noting the similarity to the current situation. He mentions the system's tendency to choose the closest lane, even if others are less congested, which he finds human-like. He praises the system's performance.",
+            "event_type": "Positive: AccurateLaneKeeping",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "03:05",
+            "description": "The driver is discussing a previous disengagement scenario, noting the similarity to the current situation. He mentions the system's tendency to choose the closest lane, even if others are less congested, which he finds human-like. He praises the system's performance.",
+            "event_type": "Positive: AppropriateLaneChange",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "03:36",
+            "description": "The autonomous system successfully executes an unprotected left-hand turn at an intersection. The system identifies a small gap in traffic and commits to the turn, demonstrating low latency and accurate decision-making. The driver praises the system's ability to take the roller right away.",
+            "event_type": "Positive: SafeInteractionWithVehicles",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "04:00",
+            "description": "The car is driving on a highway with moderate traffic. The driver is testing the autonomous driving system and commenting on its performance. The car is maintaining a safe distance from other vehicles and staying in its lane.",
+            "event_type": "Positive: AccurateLaneKeeping",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "04:15",
+            "description": "The car approaches a stop sign at an intersection. The driver mentions that the car sometimes does a 'nitsa stop', which is a very slow stop that can annoy other drivers. The car stops at the stop sign and waits for traffic to clear.",
+            "event_type": "Negative: HesitantAcceleration",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "04:37",
+            "description": "The car is waiting at an intersection with moderate traffic. A school bus is approaching from the right. The car waits for the school bus to pass before proceeding. The car is in a good position in the median.",
+            "event_type": "Positive: SafeInteractionWithVehicles",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "04:47",
+            "description": "The car is preparing to turn left at the intersection. The steering wheel is moving in preparation for the turn. The car then proceeds to make the turn smoothly and safely. The driver feels like the car was thinking about when it was going to go.",
+            "event_type": "Positive: SmoothAcceleration",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "05:07",
+            "description": "The car is approaching a stop sign. The car slows down and stops at the stop sign. The car then proceeds to make a right turn after yielding to cross traffic.",
+            "event_type": "Positive: ProperSignAndLightCompliance",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "05:34",
+            "description": "The car is approaching a turn. The car makes a smooth turn. The driver is impressed with the car's ability to make the turn without any issues.",
+            "event_type": "Positive: AccurateLaneKeeping",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "06:17",
+            "description": "The vehicle approaches a stop sign at an intersection. The autonomous system initially seems like it might proceed without stopping, but then it hesitates and stops just before the intersection. The driver says it was a close call.",
+            "event_type": "Negative: UnsafeInteractionWithVehicles",
+            "driver_action": "Intervened/Disengaged"
+        },
+        {
+            "timestamp": "06:23",
+            "description": "The vehicle approaches an intersection with multiple lanes. The autonomous system pauses to assess the traffic situation before proceeding. The driver notes that the system could have rolled through the intersection, but it chose to take a look first.",
+            "event_type": "Positive: SafeInteractionWithVehicles",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "07:57",
+            "description": "The autonomous system was waiting to enter the roundabout. There was a car approaching from the right, and the system started to release the brakes, but then reapplied them. The driver felt the release and reapplication of the brakes.",
+            "event_type": "Negative: HesitantAcceleration",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "08:09",
+            "description": "The car is approaching an intersection and the driver notes that the car is not going for a gap in traffic. The car does not pop its brakes, which the driver notes is good. The car on the far side is edging a little bit.",
+            "event_type": "Positive: SafeInteractionWithVehicles",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "08:18",
+            "description": "The driver feels the brake popping off as the car on the far side edges a little bit. The driver notes that if you're looking at the torque sensors on the HUD display from the CAN bus, you'll probably see those little pops.",
+            "event_type": "Positive: SmoothBraking",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "08:29",
+            "description": "The car is wide open from the left and right, so it's going to wait on the roller and it's just going to take it. The driver notes that it was very good decision making. A couple times the driver felt the brake release, but very quickly it reassessed and said no.",
+            "event_type": "Positive: SafeInteractionWithVehicles",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "09:58",
+            "description": "The autonomous vehicle is waiting at an intersection with heavy traffic coming from the left. After waiting for a while, the system identifies a small gap in the traffic and successfully makes a left turn. The system accelerates smoothly after the turn.",
+            "event_type": "Positive: SmoothAcceleration",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "10:05",
+            "description": "The autonomous system successfully navigated a situation where a vehicle was fitting into the median. The system pre-rolled with the steering wheel to assess the situation and then proceeded to roll into the left lane. The driver was not concerned and the system executed the maneuver perfectly.",
+            "event_type": "Positive: CorrectObstacleAvoidance",
+            "driver_action": "NoActionTaken"
+        }
+    ]
+}

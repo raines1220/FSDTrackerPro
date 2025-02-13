@@ -1,0 +1,166 @@
+{
+    "version": "0.1",
+    "model_used": "gemini-2.0-flash",
+    "prompt_used": "You are given a 60 seconds (at most) video clip of an autonomous driving test. Please analyze it and identify any interesting driving events. \nFor each event, include the timestamp of the event (in seconds), a 50 words description, the event type, and whether the driver intervened/disengaged.\nIntervened/Disengaged is when the driver assists the autonomous system, or takes over the control of the vehicle.\nNote the driver might discuss about a previous issue, but it's not an event. You should ONLY include events that are happening in the video clip.\nAlso, since the video cannot be longer than 60 seconds, the timestamp should be between [0, 60].\n...\n",
+    "summary": {
+        "total_duration": "11:30",
+        "events": {
+            "total_events": 25,
+            "positive_events": 9,
+            "negative_events": 16,
+            "interventions": 6
+        }
+    },
+    "results": [
+        {
+            "timestamp": "00:41",
+            "description": "The autonomous system is approaching an unprotected left turn with a truck and trailer approaching. The system waits for a safe gap in traffic before proceeding with the turn. The system successfully completes the turn and merges into the middle lane.",
+            "event_type": "Positive: SafeInteractionWithVehicles",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "01:12",
+            "description": "The driver programs a U-turn into the navigation system to test the FSD Beta's ability to perform the maneuver. The driver is curious to see if the system can handle the U-turn successfully, especially with oncoming traffic.",
+            "event_type": "Positive: AccurateRoutingAndNavigation",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "01:33",
+            "description": "The vehicle slows down and stops in the lane, preparing for the U-turn. The driver observes that there is oncoming traffic and the system needs to wait for a safe opportunity to execute the turn. The driver wants the car to move to the right lane.",
+            "event_type": "Positive: SafeInteractionWithVehicles",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "01:42",
+            "description": "The autonomous system is not creeping forward to perform the U-turn. The driver believes the system had an opportunity to creep forward but chose not to. The driver is not sure if the system will perform the U-turn.",
+            "event_type": "Negative: OtherEvent",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "02:33",
+            "description": "The autonomous system is planning a U-turn, but there is a car on the left. The driver is unsure of the other car's intentions, so he disengages the autonomous system to avoid a potential collision. The car on the left did not have a blinker on.",
+            "event_type": "Negative: UnsafeInteractionWithVehicles",
+            "driver_action": "Intervened/Disengaged"
+        },
+        {
+            "timestamp": "02:42",
+            "description": "The autonomous system announces that it is unable to complete the U-turn maneuver. The driver acknowledges this and continues driving manually. The driver was testing the U-turn capabilities of the autonomous system, but it was not able to perform the maneuver.",
+            "event_type": "Negative: NavigationError",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "03:11",
+            "description": "The autonomous system proceeded too far into the intersection during the creep forward, almost entering the lane of cross traffic. The driver intervened verbally to prevent the vehicle from proceeding further and potentially causing a collision.",
+            "event_type": "Negative: UnsafeInteractionWithVehicles",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "03:28",
+            "description": "The autonomous system proceeded too far into the intersection during the creep forward, almost entering the lane of cross traffic. The driver disengaged the autonomous system to prevent the vehicle from proceeding further and potentially causing a collision.",
+            "event_type": "Negative: UnsafeInteractionWithVehicles",
+            "driver_action": "Intervened/Disengaged"
+        },
+        {
+            "timestamp": "04:00",
+            "description": "The autonomous system attempts to navigate a turn but fails, leading the driver to express surprise and decide to try again. The system's initial attempt was deemed unexpected and disappointing by the driver.",
+            "event_type": "Negative: NavigationError",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "04:15",
+            "description": "The autonomous system creeps forward at a stop sign, requiring the driver to verbally prompt it to stop. The driver notes a car behind them, limiting their ability to retry the maneuver.",
+            "event_type": "Negative: HesitantAcceleration",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "04:52",
+            "description": "The driver disengages the autopilot system. The driver felt that the truck had to give more room because the car was so far out there. The driver also mentions a lunge.",
+            "event_type": "Negative: UnsafeInteractionWithVehicles",
+            "driver_action": "Intervened/Disengaged"
+        },
+        {
+            "timestamp": "05:29",
+            "description": "The autonomous system attempts to enter a small gap in traffic at a roundabout, but the driver intervenes and stops the vehicle. The driver expresses discomfort with the system's hesitation and lunging behavior, especially with the heavy traffic flow.",
+            "event_type": "Negative: UnsafeInteractionWithVehicles",
+            "driver_action": "Intervened/Disengaged"
+        },
+        {
+            "timestamp": "06:05",
+            "description": "The autonomous system successfully merges into a very tight gap in traffic. The driver praises the system for committing to the merge, stating that he would have had to disengage or take over with the accelerator if it hadn't.",
+            "event_type": "Positive: AppropriateLaneChange",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "06:41",
+            "description": "The autonomous system approaches a stop sign. The driver is monitoring the system's behavior and is prepared to intervene if necessary. The system slows down and comes to a complete stop at the stop sign.",
+            "event_type": "Positive: ProperSignAndLightCompliance",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "07:07",
+            "description": "The autonomous vehicle is approaching an intersection and creeping forward for visibility. The left lane is open, but the system decides to wait, which is a cautious approach. The system waits for all lanes to be clear before proceeding, which is a conservative decision.",
+            "event_type": "Positive: CorrectObstacleAvoidance",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "07:23",
+            "description": "The autonomous vehicle is driving on a three-lane road. The system waits for all three lanes to be open before merging into the middle lane. The driver thinks it's not human-like, as a human driver would have merged into the left or right lane when they were open.",
+            "event_type": "Negative: UnnecessaryOrUnsafeLaneChange",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "07:55",
+            "description": "The driver disengages the autopilot system. The driver mentions that the autonomous system's driving style is not human-like, and they would not drive that way themselves, especially in Jacksonville, Florida. The driver is not satisfied with the autonomous system's performance.",
+            "event_type": "Negative: UnsafeInteractionWithVehicles",
+            "driver_action": "Intervened/Disengaged"
+        },
+        {
+            "timestamp": "08:39",
+            "description": "The autonomous system stops at the intersection, even though there is a car in front of it. The driver thinks that the stop might annoy the drivers behind him. The system is waiting for the car in front to move before proceeding.",
+            "event_type": "Negative: HesitantAcceleration",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "08:57",
+            "description": "The autonomous system is waiting for the car in front to move, even though there is a large gap after the car. The driver thinks that the system should go now, but it is still waiting. The driver is encouraging the system to commit.",
+            "event_type": "Negative: HesitantAcceleration",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "09:02",
+            "description": "The autonomous driving system made a very late commit, which the driver considered a wasted opportunity for decision-making. Although it worked due to the amount of time available, the driver felt it was a latency issue, as it waited until the last second to go out.",
+            "event_type": "Negative: DelayedBraking",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "09:47",
+            "description": "The autonomous driving system is approaching an intersection with a stop sign. The driver notes that there is a big hole and wide open space, indicating no traffic. The driver comments that these scenarios are too easy for the system to handle.",
+            "event_type": "Positive: SmoothAcceleration",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "10:17",
+            "description": "The car is approaching a roundabout and preparing to enter. The autonomous system is slowing down and creeping forward for visibility, as it assesses the traffic situation before proceeding into the roundabout.",
+            "event_type": "Positive: CorrectRoundaboutHandling",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "10:35",
+            "description": "The car is at a roundabout and the autonomous system is waiting for a gap in traffic before proceeding. The system initially identifies a small gap but decides to wait for a larger, safer opening before entering the roundabout.",
+            "event_type": "Positive: CorrectRoundaboutHandling",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "10:54",
+            "description": "The autonomous system disengages and the driver takes over control of the vehicle. The reason for the disengagement is not explicitly stated, but it occurs during normal driving conditions on a straight road.",
+            "event_type": "Negative: OtherEvent",
+            "driver_action": "Intervened/Disengaged"
+        },
+        {
+            "timestamp": "11:01",
+            "description": "The car enters the middle lane with some uncomfortable behavior, lunging towards the creep line. The driver mentions one or two poor decisions made by the system, stating it didn't feel as good as before, but doesn't consider it a regression.",
+            "event_type": "Negative: JerkySteering",
+            "driver_action": "NoActionTaken"
+        }
+    ]
+}

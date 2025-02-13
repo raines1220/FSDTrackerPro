@@ -14,15 +14,17 @@ from fsd_tracker_pro.response_model import Event
 
 def parse_version(filename):
     # Regex to find version numbers like v11.4.3 or v12.5.6.3
-    pattern = r'v(\d+(?:\.\d+){2,})'
+    pattern = r'v(\d+(?:\.\d+){1,})'
     match = re.search(pattern, filename)
     if not match:
         return None
     version_str = match.group(1)  # e.g. '11.4.3' or '12.5.6.3'
     parts = version_str.split('.')
-    if len(parts) < 3:
+    if len(parts) < 2:
         return None
     # Only take first three parts for major, minor, fix
+    if len(parts) == 2:
+        return parts[0], parts[1], '0'
     return parts[0], parts[1], parts[2]
 
 
@@ -94,9 +96,11 @@ def extract_data_from_file(filepath):
 
 
 def main():
-    # Determine the folder for results relative to this script
-    base_dir = os.path.dirname(os.path.abspath(__file__))
-    results_dir = os.path.normpath(os.path.join(base_dir, '../results'))
+    if len(sys.argv) < 2:
+        print("Usage: python calculate_hour_per_intervention.py <results_folder>")
+        return
+    results_dir = sys.argv[1]
+
     json_files = glob.glob(os.path.join(results_dir, '*.json'))
 
     if not json_files:
@@ -195,7 +199,7 @@ def main():
                 avg = (stats['total_seconds'] / 60) / stats['total_interventions']
             else:
                 avg = 0
-            version_labels.append(f"FSD v{ver}")
+            version_labels.append(f"FSD v{ver.replace('.0', '')}")
             avg_minutes_values.append(avg)
         
         # Draw the bar chart and capture the bar containers.

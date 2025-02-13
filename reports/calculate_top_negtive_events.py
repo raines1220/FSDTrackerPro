@@ -30,24 +30,27 @@ def convert_duration_to_seconds(duration_str):
         return 60
 
 def parse_version(filename):
-    """
-    Extracts major, minor, fix version from filename containing a version like v11.4.3.
-    Returns a tuple (major, minor, fix) or None if not found.
-    """
-    pattern = r'v(\d+(?:\.\d+){2,})'
+    # Regex to find version numbers like v11.4.3 or v12.5.6.3
+    pattern = r'v(\d+(?:\.\d+){1,})'
     match = re.search(pattern, filename)
     if not match:
         return None
-    version_str = match.group(1)  # e.g., "11.4.3"
+    version_str = match.group(1)  # e.g. '11.4.3' or '12.5.6.3'
     parts = version_str.split('.')
-    if len(parts) < 3:
+    if len(parts) < 2:
         return None
+    # Only take first three parts for major, minor, fix
+    if len(parts) == 2:
+        return parts[0], parts[1], '0'
     return parts[0], parts[1], parts[2]
 
+
 def main():
-    # Determine the results folder relative to this script
-    base_dir = os.path.dirname(os.path.abspath(__file__))
-    results_dir = os.path.normpath(os.path.join(base_dir, '../results'))
+    # Determine the results folder from command line argument.
+    if len(sys.argv) < 2:
+        print("Usage: python calculate_top_negtive_events.py <results_folder>")
+        return
+    results_dir = sys.argv[1]
     json_files = glob.glob(os.path.join(results_dir, '*.json'))
     
     if not json_files:

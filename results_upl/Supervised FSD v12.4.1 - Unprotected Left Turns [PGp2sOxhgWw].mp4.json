@@ -1,0 +1,148 @@
+{
+    "version": "0.1",
+    "model_used": "gemini-2.0-flash",
+    "prompt_used": "You are given a 60 seconds (at most) video clip of an autonomous driving test. Please analyze it and identify any interesting driving events. \nFor each event, include the timestamp of the event (in seconds), a 50 words description, the event type, and whether the driver intervened/disengaged.\nIntervened/Disengaged is when the driver assists the autonomous system, or takes over the control of the vehicle.\nNote the driver might discuss about a previous issue, but it's not an event. You should ONLY include events that are happening in the video clip.\nAlso, since the video cannot be longer than 60 seconds, the timestamp should be between [0, 60].\n...\n",
+    "summary": {
+        "total_duration": "11:32",
+        "events": {
+            "total_events": 22,
+            "positive_events": 15,
+            "negative_events": 7,
+            "interventions": 3
+        }
+    },
+    "results": [
+        {
+            "timestamp": "00:42",
+            "description": "The car starts moving forward from a stop sign. The driver has set the navigation to a destination and the car is now following the route. There is a loading error on the split view of the screen, but the car is still navigating.",
+            "event_type": "Positive: SmoothAcceleration",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "01:07",
+            "description": "The autonomous vehicle approaches a four-way intersection with traffic coming from the right. The vehicle slows down and stops at the intersection, waiting for a safe opportunity to proceed. The driver is monitoring the situation, but does not intervene.",
+            "event_type": "Positive: SafeInteractionWithVehicles",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "01:21",
+            "description": "The autonomous vehicle waits for a gap in traffic before proceeding through the intersection. It then accelerates smoothly and merges into the flow of traffic. The driver is still monitoring the situation, but does not intervene.",
+            "event_type": "Positive: SmoothAcceleration",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "01:58",
+            "description": "The autonomous vehicle approaches another four-way intersection with light traffic. The vehicle slows down and stops at the intersection, waiting for a safe opportunity to proceed. The driver is monitoring the situation, but does not intervene.",
+            "event_type": "Positive: SafeInteractionWithVehicles",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "02:06",
+            "description": "The vehicle waited for the two cars in the right lane to pass before changing to the left lane. The autonomous system made a good decision to wait for the cars to pass before changing lanes.",
+            "event_type": "Positive: AppropriateLaneChange",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "02:45",
+            "description": "The vehicle stopped way back from the stop sign and needed to creep forward. The autonomous system stopped too far from the intersection and needed to move forward to get a better view of the traffic.",
+            "event_type": "Negative: DelayedBraking",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "02:52",
+            "description": "The vehicle was going to go for it, but then needed to wait. The autonomous system initially attempted to proceed through the intersection, but then realized it needed to wait for oncoming traffic.",
+            "event_type": "Negative: HesitantAcceleration",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "03:00",
+            "description": "The autonomous vehicle made a close pass to another vehicle. The driver felt the vacuum from the other car. The driver felt that the autonomous system made an aggressive turn, and went into the median, but it wasn't rolling, so the driver let it go.",
+            "event_type": "Negative: UnsafeInteractionWithVehicles",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "03:58",
+            "description": "The autonomous vehicle made a weird little jog. The driver is waiting for the autonomous system to make a turn, but there is a car behind, so the driver is not going to wait too long.",
+            "event_type": "Negative: JerkySteering",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "04:07",
+            "description": "The autonomous system attempts to enter a small gap in traffic at an intersection. The driver is not comfortable with the system's decision and disengages the autopilot to take manual control of the vehicle.",
+            "event_type": "Negative: UnsafeInteractionWithVehicles",
+            "driver_action": "Intervened/Disengaged"
+        },
+        {
+            "timestamp": "05:24",
+            "description": "The autonomous system attempts to turn left into the median, but the driver is concerned about the small gap in traffic. The system successfully navigates the turn and merges into the median without causing any issues. The driver praises the smooth approach and the system's ability to wait for the right opportunity.",
+            "event_type": "Positive: AccurateLaneKeeping",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "06:00",
+            "description": "The autonomous vehicle approaches a stop sign at an intersection. The system stops before the stop line, then stops again after a car passes through the intersection. The system then proceeds to creep forward and make a left turn.",
+            "event_type": "Positive: ProperSignAndLightCompliance",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "06:17",
+            "description": "The autonomous vehicle makes a left turn onto a road with traffic. The driver comments that the system could have accelerated more quickly to merge into traffic, but the maneuver was still safe and appropriate.",
+            "event_type": "Positive: SafeInteractionWithVehicles",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "06:53",
+            "description": "The autonomous vehicle approaches a stop sign at an intersection. The system stops before the stop line, and waits for traffic to clear before proceeding.",
+            "event_type": "Positive: ProperSignAndLightCompliance",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "07:11",
+            "description": "The autonomous system is merging into the traffic from the left. There is a medium gap and then a very long gap. The system is going for the medium gap because it can't see beyond that. The driver is encouraging the system to roll into the traffic.",
+            "event_type": "Positive: SafeInteractionWithVehicles",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "07:47",
+            "description": "The autonomous system is driving on the road. The driver is discussing the decision making on the gaps from the left. The driver thinks that the human might have waited one more car because there was nobody behind that one. The driver felt the necessary deceleration.",
+            "event_type": "Positive: SafeInteractionWithVehicles",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "08:11",
+            "description": "The vehicle is approaching a roundabout and needs to merge into the median to wait for a safe gap in traffic from the right. The driver is observing the autonomous system's behavior and preparing for a smooth merge and wait.",
+            "event_type": "Positive: CorrectObstacleAvoidance",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "08:43",
+            "description": "The autonomous system initiated a lane change to the left lane. The driver notes that the system pre-rolled the lane change, meaning it anticipated the need to change lanes and began the maneuver smoothly. The driver was not scared by the lane change.",
+            "event_type": "Positive: AppropriateLaneChange",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "09:27",
+            "description": "The car started rolling at the intersection, and the driver tapped the brakes to stop it. The car then thought about going, but the driver stopped it again. The driver is monitoring the torque and is ready to intervene if necessary.",
+            "event_type": "Negative: HesitantAcceleration",
+            "driver_action": "Intervened/Disengaged"
+        },
+        {
+            "timestamp": "09:53",
+            "description": "The car is approaching a left lane only turn. The second lane made the car stop. The driver is monitoring the situation and is ready to intervene if necessary. The car successfully makes the turn.",
+            "event_type": "Positive: AccurateLaneKeeping",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "10:24",
+            "description": "The vehicle is approaching a crossroad with cars on the left and right. The autonomous system starts to accelerate to cross the road, but then it second-guesses itself and stops. The driver did not intervene, and the autonomous system made the right decision.",
+            "event_type": "Positive: CorrectObstacleAvoidance",
+            "driver_action": "NoActionTaken"
+        },
+        {
+            "timestamp": "11:05",
+            "description": "The driver mentions that he disengaged once, but in hindsight, it might have been okay. He felt a little shaken on the previous one, which is why he thinks his nerves caused him to disengage. He hopes the viewers understand his decision.",
+            "event_type": "Negative: OtherEvent",
+            "driver_action": "Intervened/Disengaged"
+        }
+    ]
+}
